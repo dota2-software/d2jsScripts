@@ -1,0 +1,16 @@
+﻿<root>
+	<styles>
+		<include src="s2r://panorama/styles/dotastyles.vcss_c" />
+		<include src="s2r://panorama/styles/magadan.vcss_c" />
+	</styles>
+	<Panel style="padding:3px;border-radius:5px;width:190px;height:80px;flow-children:down;background-color:#000000EE;">
+		<Slider class="HorizontalSlider" style="width:600px;" direction="horizontal" text="zxc"/>
+		<Panel style="flow-children:right;horizontal-align:center;">
+			<Label text="приоритет инвиза:" style="font-size:14px;"/>
+			<Label text="0.2" style="color:green;font-size:16px;"/>
+		</Panel>
+		<Panel style="flow-children:right;horizontal-align:center;">
+			<ToggleButton class="CheckBox" id="AutoTrackKamikadze" text="Кидать трэк из инвиза"/>
+		</Panel>
+	</Panel>
+</root>

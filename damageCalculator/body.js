@@ -9,9 +9,9 @@ var LenseBonusRange = 200
 
 var invisibilityImportance = 0.2
 
-Object.prototype.toArray = function() {
+function ObjectToArray(obj) {
 	var x = []
-	$.each(this, function(i,n) {x.push(n)})
+	for (var i in obj) x.push(obj[i])
 	return x
 }
 
@@ -66,10 +66,30 @@ function DamageCalculatorFunc(){
 		calculVars[heroname] = {
 			heroname: heroname,
 			damage: finalDamage,
-			dps: finalDamage*myStats.AttacksPerSecond,
+			dps: Math.round(finalDamage*myStats.AttacksPerSecond),
 			time4Win: time4Win,
 			versusWin: (time4Win < enemyTime4Win?true:false)
 		}
+	}
+
+	var a = ObjectToArray(calculVars)
+	var Mainpanel = Game.Panels.DamageCalculator
+	for(var i=0; i<a.length; i++) {
+		var el = a[i]
+
+		var p = Mainpanel.Children()[i]
+
+		var heroname = p.Children()[0]
+		var damage = p.Children()[1]
+		var dps = p.Children()[2]
+		var versusWin = p.Children()[3]
+		var time4Win = p.Children()[4]
+
+		heroname.heroname = el.heroname
+		damage.text = 'Damage: '+String(el.damage)
+		dps.text = 'DPS: '+String(el.dps)
+		versusWin.text = '1v1Win: '+String(el.versusWin)
+		time4Win.text = 'time4Win: '+String(el.time4Win)
 	}
 }
 
@@ -89,25 +109,6 @@ var DamageCalculatorUI = function(){
 			Config = a
 			Game.Panels.DamageCalculator.style.position = Config.MainPanel.x + ' ' + Config.MainPanel.y + ' 0'
 		});
-		
-		var a = calculVars.toArray()
-		for(var i=0; i<a.length; i++) {
-			var el = a[i]
-			var queueString = String(i+1)
-
-			var heroname = $.GetContextPanel().FindChildTraverse('heroname'+queueString)
-			var damage = $.GetContextPanel().FindChildTraverse('damage'+queueString)
-			var dps = $.GetContextPanel().FindChildTraverse('DPS'+queueString)
-			var versusWin = $.GetContextPanel().FindChildTraverse('1v1Win'+queueString)
-			var time4Win = $.GetContextPanel().FindChildTraverse('time4Win'+queueString)
-
-			heroname.heroname = el.heroname
-			damage.text = 'Damage: '+String(el.damage)
-			dps.text = 'DPS: '+String(el.dps)
-			versusWin.text = '1v1Win: '+String(el.versusWin)
-			time4Win.text = 'time4Win: '+String(el.time4Win)
-		}
-
 	})
 }
 

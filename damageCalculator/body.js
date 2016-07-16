@@ -41,6 +41,9 @@ function entCombatInfo(ent) {
 		ArmorReductionForPhysicalDamage: Entities.GetArmorReductionForDamageType(ent, DAMAGE_TYPES.DAMAGE_TYPE_PHYSICAL)
 	}
 
+	info.Damage = (info.DamageMax-info.DamageMin)/2 + info.DamageMin + info.DamageBonus
+	info.Armor = info.PhysicalArmorValue+info.BonusPhysicalArmor
+
 	return info
 }
 
@@ -53,9 +56,9 @@ function DamageCalculatorFunc(){
 	for(m in ents){
 		var Ent = ents[m]
 		var heroname = Entities.GetUnitName(Ent)
-		var enemyStats = entCombatInfo(Ent)
-		var finalDamage = Math.round(myStats.DamageMax*(1-(0.06*enemyStats.PhysicalArmorValue)/(1+0.06*enemyStats.PhysicalArmorValue)))
-		var enemyFinalDamage = Math.round(enemyStats.DamageMax*(1-(0.06*myStats.PhysicalArmorValue)/(1+0.06*myStats.PhysicalArmorValue)))
+		var enemyStats = entCombatInfo(Ent) 
+		var finalDamage = Math.round(myStats.Damage*(1-(0.06*enemyStats.Armor)/(1+0.06*enemyStats.Armor)))
+		var enemyFinalDamage = Math.round(enemyStats.Damage*(1-(0.06*myStats.Armor)/(1+0.06*myStats.Armor)))
 		
 		var Attacks4kill = Math.round(enemyStats.Health/finalDamage)
 		var enemyAttacks4kill = Math.round(myStats.Health/enemyFinalDamage)
@@ -73,6 +76,9 @@ function DamageCalculatorFunc(){
 	}
 
 	var a = ObjectToArray(calculVars)
+
+	if (a.length < 5) return
+
 	var Mainpanel = Game.Panels.DamageCalculator
 	for(var i=0; i<a.length; i++) {
 		var el = a[i]
@@ -114,6 +120,7 @@ var DamageCalculatorUI = function(){
 
 var DamageCalculatorOnCheckBoxClick = function(){
 	if ( !DamageCalculator.checked ){
+		calculVars = {}
 		Game.Panels.DamageCalculator.DeleteAsync(0)
 		Game.ScriptLogMsg('Script disabled: DamageCalculator', '#ff0000')
 		return

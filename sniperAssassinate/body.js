@@ -21,7 +21,7 @@ function sniperAssassinateFunc(){
 	var UltiManaCost = Abilities.GetManaCost(Ulti)
 
 	//проверка на готовность ульты
-	if(UltiLvl==0 || UltiCd > 0 || UltiManaCost > Entities.getMana(MyEnt)) return		
+	if(UltiLvl==0 || UltiCd > 0 || UltiManaCost > Entities.GetMana(MyEnt)) return		
 
 	var HEnts = Game.PlayersHeroEnts()
 	for (i in HEnts) {

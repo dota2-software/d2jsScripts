@@ -34,7 +34,7 @@ function sniperAssassinateFunc(){
 		if( !Entities.IsEnemy(ent) || Entities.IsMagicImmune(ent) || !Entities.IsAlive(ent) || Entities.IsInvisible(ent)) continue
 			
 		var Range = Entities.GetRangeToUnit(MyEnt, ent)
-		if(Range>UltiRange) continue
+		if(Range>UltiRange || Range<200) continue
 
 		var enemyhp = Entities.GetHealth(ent)
 		var MagicResist = Entities.GetArmorReductionForDamageType( ent, 2 )*100

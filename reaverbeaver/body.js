@@ -22,8 +22,8 @@ function reaverbeaverFunc(){
 	var UltiCd = Abilities.GetCooldownTimeRemaining( Ulti )
 	var UltiDmg = Abilities.GetAbilityDamage(Ulti)
 	var UltiManaCost = Abilities.GetManaCost(Ulti)
-	var dmg = damage[UltiLvl]
-	if(Entities.HasItemInInventory( MyEnt, 'item_ultimate_scepter')) dmg = aganimdamage[UltiLvl]
+	var dmg = damage[UltiLvl-1]
+	if(Entities.HasItemInInventory( MyEnt, 'item_ultimate_scepter')) dmg = aganimdamage[UltiLvl-1]
 
 	//проверка на готовность ульты
 	if(UltiLvl==0 || UltiCd > 0 || UltiManaCost > Entities.GetMana(MyEnt)) return		
@@ -46,6 +46,7 @@ function reaverbeaverFunc(){
 		var MagicResist = Entities.GetArmorReductionForDamageType( ent, 2 )*100
 
 		var calcdamge = (enemymaxhp-enemyhp)*dmg
+		$.Msg(enemyhp, enemymaxhp, dmg)
 
 		var clearDamage = calcdamge - calcdamge/100*MagicResist
 

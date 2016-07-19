@@ -232,7 +232,7 @@ var abilities = {
 	'axe_culling_blade': {
 		damage: [250, 325, 400],
 		aganimDamage: [300, 425, 550],
-		function: magicAbildamage
+		function: physicAbildamage
 	}
 
 }

@@ -72,36 +72,36 @@ function entInfo(ent) {
 function magicAbildamage(info) {
 	var MagicDamage = info.abilDmg
 	//объект с именами бафов
-	var buffsnames = Game.GetBuffsNames(ent)
+	var buffsnames = Game.GetBuffsNames(info.ent)
 	//базовый маг резист вражеского героя
-	var MagicResist = Entities.GetArmorReductionForDamageType( ent, 2 )*100
+	var MagicResist = Entities.GetArmorReductionForDamageType(info.ent, 2)*100
 	//объект с указателями на де\бафы вражеского героя
-	var buffs = Game.GetBuffs(ent)
+	var buffs = Game.GetBuffs(info.ent)
 	//расчет доп. маг урона от дебафов у вражеского героя
 	for(m in buffs)
 		for(k in DebuffsAddMagicDmg)
-			if(Buffs.GetName(ent,buffs[m]) === DebuffsAddMagicDmg[k][0])
+			if(Buffs.GetName(info.ent,buffs[m]) === DebuffsAddMagicDmg[k][0])
 				if(Array.isArray(DebuffsAddMagicDmg[k][1]))
-					MagicDamage *= DebuffsAddMagicDmg[k][1][Abilities.GetLevel(Buffs.GetAbility(ent,buffs[i]))-1]
+					MagicDamage *= DebuffsAddMagicDmg[k][1][Abilities.GetLevel(Buffs.GetAbility(info.ent,buffs[i]))-1]
 				else
 					MagicDamage *= DebuffsAddMagicDmg[k][1]
 	//объект с указателями на мои бафы
-	var buffsme = Game.GetBuffs(MyEnt)
+	var buffsme = Game.GetBuffs(info.MyEnt)
 	//расчет доп. маг урона от бафов на зевсе
 	for(m in buffsme)
 		for(k in BuffsAddMagicDmgForMe)
-			if(Buffs.GetName(ent,buffsme[m]) === BuffsAddMagicDmgForMe[k][0])
+			if(Buffs.GetName(info.ent,buffsme[m]) === BuffsAddMagicDmgForMe[k][0])
 				if(Array.isArray(BuffsAddMagicDmgForMe[k][1]))
-					MagicDamage *= BuffsAddMagicDmgForMe[k][1][Abilities.GetLevel(buffsme.GetAbility(ent,buffsme[i]))-1]
+					MagicDamage *= BuffsAddMagicDmgForMe[k][1][Abilities.GetLevel(buffsme.GetAbility(info.ent,buffsme[i]))-1]
 				else
 					MagicDamage *= BuffsAddMagicDmgForMe[k][1]
 				
 	//отнимаем маг. урон из-за бафов, абсорбирующих часть урона
 	for(m in buffs)
 		for(k in BuffsAbsorbMagicDmg)
-			if(Buffs.GetName(ent,buffs[m]) === BuffsAbsorbMagicDmg[k][0])
+			if(Buffs.GetName(info.ent,buffs[m]) === BuffsAbsorbMagicDmg[k][0])
 				if(Array.isArray(BuffsAbsorbMagicDmg[k][1]))
-					MagicDamage -= BuffsAbsorbMagicDmg[k][1][Abilities.GetLevel(buffs.GetAbility(ent,buffs[i]))-1]
+					MagicDamage -= BuffsAbsorbMagicDmg[k][1][Abilities.GetLevel(buffs.GetAbility(info.ent,buffs[i]))-1]
 				else
 					MagicDamage -= BuffsAddMagicDmgForMe[k][1]
 
@@ -277,7 +277,7 @@ function abilityfinishFunc(){
 
 				if (Abilities.GetCooldownTimeRemaining(sphere)-2 <= 0) continue
 			}
-
+			var buffsnames = Game.GetBuffsNames(ent)
 			if( !Entities.IsEnemy(ent) || Entities.IsMagicImmune(ent) || !Entities.IsAlive(ent) || Entities.IsInvisible(ent) || Game.IntersecArrays(buffsnames, IgnoreBuffs)) continue
 
 
@@ -287,6 +287,7 @@ function abilityfinishFunc(){
 			var info = entInfo(ent)
 
 			info.MyEnt = MyEnt
+			info.ent = ent
 			info.abilDmg = (Entities.HasScepter(MyEnt)?abilities[abils[i]].aganimDamage[abilLvl-1]:abilities[abils[i]].damage[abilLvl-1])
 
 			if (abilities[abils[i]].function(info)) {

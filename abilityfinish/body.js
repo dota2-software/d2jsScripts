@@ -236,6 +236,11 @@ var abilities = {
 		damage: [225, 325, 425],
 		aganimDamage: [440, 540, 640],
 		function: magicAbildamage
+	},
+	'axe_culling_blade': {
+		damage: [250, 325, 400],
+		aganimDamage: [300, 425, 550],
+		function: magicAbildamage
 	}
 
 }
